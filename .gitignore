@@ -1,5 +1,5 @@
-*
-!/gulp
+/*
+!/gulp/
 !/.gitignore
 !/gulpfile.js
 !/package-lock.json
