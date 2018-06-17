@@ -1,0 +1,10 @@
+# ignore everything
+/*
+
+# don't ignore following
+/gulp/**/*.DS_Store
+!/gulp/
+!/.gitignore
+!/gulpfile.js
+!/package-lock.json
+!/package.json
