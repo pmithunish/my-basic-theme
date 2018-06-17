@@ -1,4 +1,5 @@
 /*
+/gulp/**/*.DS_Store
 !/gulp/
 !/.gitignore
 !/gulpfile.js
