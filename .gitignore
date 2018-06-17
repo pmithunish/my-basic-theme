@@ -1,8 +1,10 @@
 # ignore everything
 /*
 
-# don't ignore following
+# ignore specific
 /gulp/**/*.DS_Store
+
+# don't ignore following
 !/gulp/
 !/.gitignore
 !/gulpfile.js
