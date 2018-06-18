@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
-@import 'src/stylesheets/partials/_colors';
+@import './stylesheets/partials/_colors';
 @import '~@angular/material/theming';
 
 $font-family: "'Poppins', sans-serif";
@@ -58,7 +58,10 @@ $my-foreground: my-mat-dark-theme-foreground(
 $my-background: my-mat-dark-theme-background($theme-primary-color);
 $my-app-theme-custom: map-merge(
   $my-app-theme,
-  (foreground: $my-foreground, background: $my-background)
+  (
+    foreground: $my-foreground,
+    background: $my-background
+  )
 );
 
 @include angular-material-theme($my-app-theme-custom);

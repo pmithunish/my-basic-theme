@@ -11,6 +11,8 @@
   "devDependencies": {
     "commander": "^2.15.1",
     "gulp": "^3.9.1",
+    "gulp-exec": "^3.0.1",
+    "gulp-if": "^2.0.2",
     "gulp-inject-string": "^1.1.1",
     "gulp-options": "^1.1.1",
     "gulp-print": "^5.0.0"
