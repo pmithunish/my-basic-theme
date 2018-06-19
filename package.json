@@ -9,7 +9,6 @@
   "author": "Mithunish Prabhakaran",
   "license": "MIT",
   "devDependencies": {
-    "commander": "^2.15.1",
     "gulp": "^3.9.1",
     "gulp-exec": "^3.0.1",
     "gulp-if": "^2.0.2",
