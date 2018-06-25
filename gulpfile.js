@@ -7,7 +7,11 @@ const fs = require('fs');
 const name = options.get('name') || undefined;
 
 const paths = {
-  INJECT_MATERIAL_ICONS: {
+  COPY_INDEX: {
+    SRC: 'gulp/index.html',
+    DEST: name + '/src/'
+  },
+  INJECT_NAME: {
     SRC: name + '/src/index.html',
     DEST: name + '/src/'
   },
@@ -26,18 +30,27 @@ const paths = {
   COPY_MAIN_STYLES: {
     SRC: 'gulp/styles.scss',
     DEST: name + '/src/'
+  },
+  COPY_ESSENTIALS: {
+    FAV_SRC: 'gulp/favicon.ico',
+    FAV_DEST: name + '/src/',
+    APP_SRC: 'gulp/app/**/*',
+    APP_DEST: name + '/src/app/'
   }
 };
 
 gulp.task('create-project', cb => {
   if (!fs.existsSync(name)) {
-    exec('ng new ' + name + ' --style=scss', (err, stdout, stderr) => {
-      console.log(stdout);
-      console.log(stderr);
-      cb(err);
-    });
+    exec(
+      'ng new ' + name + ' --style=scss --routing',
+      (err, stdout, stderr) => {
+        console.log(stdout);
+        console.log(stderr);
+        cb(err);
+      }
+    );
   } else {
-    cb(new Error('project already found'));
+    cb(new Error('Project already exist! Delete the project and try again!!!'));
   }
 });
 
@@ -52,27 +65,22 @@ gulp.task('install-material', ['create-project'], cb => {
   );
 });
 
-gulp.task('inject-material-icons', ['install-material'], () => {
+gulp.task('copy-index', ['install-material'], () => {
   const stream = gulp
-    .src(paths.INJECT_MATERIAL_ICONS.SRC)
-    .pipe(
-      inject.replace(
-        '<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">',
-        ''
-      )
-    )
-    .pipe(
-      inject.after(
-        '<link rel="icon" type="image/x-icon" href="favicon.ico">',
-        '\n  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">'
-      )
-    )
-    .pipe(inject.replace('<body>', '<body class="mat-typography">'))
-    .pipe(gulp.dest(paths.INJECT_MATERIAL_ICONS.DEST));
+    .src(paths.COPY_INDEX.SRC)
+    .pipe(gulp.dest(paths.COPY_INDEX.DEST));
   return stream;
 });
 
-gulp.task('inject-my-theme', ['inject-material-icons'], () => {
+gulp.task('inject-name', ['copy-index'], () => {
+  const stream = gulp
+    .src(paths.INJECT_NAME.SRC)
+    .pipe(inject.replace('<!--projectName-->', name))
+    .pipe(gulp.dest(paths.INJECT_NAME.DEST));
+  return stream;
+});
+
+gulp.task('inject-my-theme', ['inject-name'], () => {
   const stream = gulp
     .src(paths.INJECT_MY_THEME.SRC)
     .pipe(inject.replace('"src/my-theme.scss", ', ''))
@@ -102,4 +110,13 @@ gulp.task('copy-main-styles', ['copy-stylesheets'], () => {
   return stream;
 });
 
-gulp.task('default', ['copy-main-styles']);
+gulp.task('copy-essentials', ['copy-main-styles'], () => {
+  gulp
+    .src(paths.COPY_ESSENTIALS.FAV_SRC)
+    .pipe(gulp.dest(paths.COPY_ESSENTIALS.FAV_DEST));
+  gulp
+    .src(paths.COPY_ESSENTIALS.APP_SRC)
+    .pipe(gulp.dest(paths.COPY_ESSENTIALS.APP_DEST));
+});
+
+gulp.task('default', ['copy-essentials']);
